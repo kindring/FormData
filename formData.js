@@ -1,5 +1,4 @@
 import FieldCheck from "./fieldCheck";
-import fieldIsAllow from "@/until/fieldIsAllow";
 
 let hasOwnProperty = Object.prototype.hasOwnProperty;
 function hasOwn (obj, key) {
