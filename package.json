@@ -1,0 +1,8 @@
+{
+  "name": "kindFormData",
+  "version": "1.0.0",
+  "description": "表单规则验证工具库",
+  "main": "index.js",
+  "author": "kindring",
+  "license": "MIT"
+}
