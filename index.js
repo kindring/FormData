@@ -1,8 +1,14 @@
-import FieldCheck from "./fieldCheck";
-import FormItem from "./formData";
+/**
+ * @module kind-form-verify
+ */
 
 
-export default {
-    FieldCheck,
-    FormItem
-}
+export FormItem from "./lib/formData";
+
+
+export FieldCheck from "./lib/fieldCheck";
+// 示例
+/**
+ * @example
+ * import {FormItem,FieldCheck} from "kind-form-verify"
+ */
