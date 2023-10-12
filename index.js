@@ -3,10 +3,12 @@
  */
 
 
-export FormItem from "./lib/formData";
+import FormItem from "./lib/formData";
 
 
-export FieldCheck from "./lib/fieldCheck";
+import FieldCheck from "./lib/fieldCheck";
+export const FormItem = FormItem;
+export const FieldCheck = FieldCheck;
 // 示例
 /**
  * @example
