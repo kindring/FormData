@@ -93,8 +93,19 @@ class FieldCheck{
      * @type {Array< ruleItem >}
      */
     #ruleItems = [];
-    constructor() {
+
+    /**
+     *
+     * @param {Array< ruleItem >} [ruleItems] 验证规则数组
+     */
+    constructor(ruleItems) {
         this.#ruleItems = [];
+        if(ruleItems && Array.isArray(ruleItems)){
+            // 使用 addRuleItem 添加规则
+            for (const ruleItem of ruleItems) {
+                this.addRuleItem(ruleItem.name || "", ruleItem.checkFields, ruleItem.rules);
+            }
+        }
     }
 
     /**
@@ -168,33 +179,35 @@ class FieldCheck{
         return this;
     }
 
+
+
     /**
      * 获取验证规则
      * @param { string } field 字段名
      * @returns { ruleItem } 验证规则
      */
     getRuleItem(field){
-        let ruleItem = this.#ruleItems.find(item=>{
+        return this.#ruleItems.find(item => {
             // 判断是否为正则
             for (const _matchKey of item.checkFields) {
                 // 判断是否为正则
-                if(_matchKey instanceof RegExp){
+                if (_matchKey instanceof RegExp) {
                     // console.log(`使用正则进行匹配,${_matchKey.test(key)}`);
-                    if(_matchKey.test(field)){
+                    if (_matchKey.test(field)) {
                         // console.log(`通过正则匹配规则成功,${_matchKey.test(key)}`);
                         return true;
                     }
-                }else{
+                } else {
                     // console.log(`比较是否全等,${_matchKey} === ${key} ?${_matchKey === key}`);
-                    if(_matchKey === field){
+                    if (_matchKey === field) {
                         // console.log(`通过字符${_matchKey}匹配成功`);
                         return true;
-                    };
+                    }
+
                 }
             }
             return false;
         });
-        return ruleItem;
     }
 
     /**
