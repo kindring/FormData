@@ -146,7 +146,7 @@ class FieldCheck{
         }
         //  检测checkFields中的每一项是否为字符串或者正则
         for(let field of checkFields){
-            if(typeof field !== 'string' && !(field instanceof RegExp)){
+            if(typeof field !== 'string' && !this._isRegExp(field)){
                 throw new Error('checkFields item is not string or RegExp');
             }
         }
@@ -192,7 +192,7 @@ class FieldCheck{
             // 判断是否为正则
             for (const _matchKey of item.checkFields) {
                 // 判断是否为正则
-                if (_matchKey instanceof RegExp) {
+                if (this._isRegExp(_matchKey)) {
                     // console.log(`使用正则进行匹配,${_matchKey.test(key)}`);
                     if (_matchKey.test(field)) {
                         // console.log(`通过正则匹配规则成功,${_matchKey.test(key)}`);
