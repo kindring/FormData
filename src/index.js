@@ -3,10 +3,10 @@
  */
 
 
-import Form from "./lib/formData";
+import Form from "./formData";
 
 
-import F from "./lib/fieldCheck";
+import F from "./fieldCheck";
 export const FormItem = Form;
 export const FieldCheck = F;
 // 示例
