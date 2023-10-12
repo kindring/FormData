@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "表单规则验证工具库",
   "type": "module",
-  "main": "lib/bin/index.js",
+  "main": "lib/index.js",
   "author": "kindring",
   "keywords": [
     "verify",
