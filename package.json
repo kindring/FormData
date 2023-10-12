@@ -3,11 +3,22 @@
   "version": "1.0.2",
   "description": "表单规则验证工具库",
   "type": "module",
-  "main": "index.js",
+  "main": "lib/bin/index.js",
   "author": "kindring",
+  "keywords": [
+    "verify",
+    "utils"
+  ],
   "scripts": {
-    "docs": "jsdoc2md lib/*.js > api.md",
-    "patch": "npm version patch"
+    "docs": "jsdoc2md src/*.js > api.md",
+    "patch": "npm version patch",
+    "compile": "npx babel -d lib/ src/",
+    "prepublishOnly": "npm run compile"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2"
+  }
 }
