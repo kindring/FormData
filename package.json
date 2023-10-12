@@ -2,7 +2,8 @@
   "name": "kind-form-verify",
   "version": "1.0.2",
   "description": "表单规则验证工具库",
-  "module": "index.js",
+  "type": "module",
+  "main": "index.js",
   "author": "kindring",
   "scripts": {
     "docs": "jsdoc2md lib/*.js > api.md",
