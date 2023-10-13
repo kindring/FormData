@@ -1,16 +1,13 @@
 "use strict";
+
 /**
  * 表单字段验证库
  * author:kindring
  * date:2023/10/08
  */
 
-import {verifyForm} from "./types/formVerify";
-import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction} from "./types/fieldCheck";
-
-
-
-
+// import {verifyForm} from "./types/formVerify";
+// import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction} from "./types/fieldCheck";
 
 
 
@@ -64,10 +61,7 @@ class FieldCheck{
      */
     #ruleItems: ruleItem[] = [];
 
-    /**
-     *
-     * @param {Array< ruleItem >} [ruleItems] 验证规则数组
-     */
+
     constructor(ruleItems?:Array< ruleItem >) {
         this.#ruleItems = [];
         if(ruleItems && Array.isArray(ruleItems)){
@@ -151,7 +145,7 @@ class FieldCheck{
     addRuleItem(
         ruleName: string,
         checkFields: checkFields,
-        ruleArr: Array<validatorFunction | checkRule>)
+        ruleArr: Array<validatorFunction | checkRule>) : this
     {
         let ruleItem = this.buildRuleItem(ruleName, checkFields, ruleArr);
         this.#ruleItems.push(ruleItem);

@@ -1,18 +1,18 @@
 
 
 
-export interface formOption {
+type formOption = {
     key: string;
     value: string;
     disabled?: boolean;
     checkField?: string;
 }
 
-export interface FormVerifyOption{
+type FormVerifyOption = {
     isMustMatchRule: boolean;
 }
 
-export interface formItemData {
+type formItemData = {
     val?: string;
     msg?: string;
     state?: number;
@@ -31,16 +31,16 @@ export interface formItemData {
  * 表单数据对象
  * object 表单数据对象
  */
-export interface formObject {
+type formObject = {
     [key: string]: formItemData;
 }
 
-export interface formOption {
+type formOption= {
     isMustMatchRule?: boolean;
     [key: string]: any;
 }
 
 
-export interface verifyForm{
+type verifyForm = {
     [key: string]: any;
 }

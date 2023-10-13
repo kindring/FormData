@@ -1,7 +1,7 @@
 "use strict";
 import FieldCheck from "./fieldCheck";
 
-import {formItemData, formObject, formOption, FormVerifyOption} from "./types/formVerify";
+// import {formItemData, formObject, formOption, FormVerifyOption} from "./types/formVerify";
 let hasOwnProperty = Object.prototype.hasOwnProperty;
 function hasOwn (obj:object, key:string) {
     return hasOwnProperty.call(obj, key)

@@ -1,13 +1,13 @@
-export type errMessage = string | undefined;
+type errMessage = string | undefined;
 
-export enum checkCode {
+enum checkCode {
     code_pass = 1,
     code_notPass = 2,
     code_notMatch = 3
 }
 
-export type checkFields = Array<string | RegExp>;
-export interface checkRule {
+type checkFields = Array<string | RegExp>;
+type checkRule = {
     type?: string;
     min?: number;
     max?: number;
@@ -22,12 +22,12 @@ export interface checkRule {
 
 
 
-export interface ruleItem {
+type ruleItem = {
     name: string,
     checkFields: checkFields;
     rules: Array<validatorFunction | checkRule>;
 }
 
-export interface validatorFunction {
+type validatorFunction = {
     (value: any): string | null
 }
