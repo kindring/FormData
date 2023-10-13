@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "description": "表单规则验证工具库",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "kindring",
   "keywords": [
     "verify",
