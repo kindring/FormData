@@ -110,7 +110,8 @@ class FormVerify {
                 }
 
                 // 判断该options是否为禁用项
-                if ( disables && disables.indexOf(option.key) !== -1 ){
+
+                if ( disables && disables.find(item=>item === option.key) ){
                     option.disabled = true;
                 }
             }

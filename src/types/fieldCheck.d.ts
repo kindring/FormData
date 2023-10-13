@@ -9,8 +9,8 @@ type errMessage = string | undefined;
  */
 enum checkCode {
     code_pass = 1,
-    code_notPass = 2,
-    code_notMatch = 3
+    code_notPass,
+    code_notMatch
 }
 
 type checkFields = Array<string | RegExp>;

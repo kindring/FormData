@@ -6,8 +6,9 @@
  * @property [checkField] 依赖字段
  */
 type formOption = {
-    key: string;
-    value: string;
+    text: string;
+    key: string | number;
+    value: string | number;
     disabled?: boolean;
     checkField?: string;
 }
