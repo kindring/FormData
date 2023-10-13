@@ -3,12 +3,15 @@
  */
 
 
-import Form from "./formData";
+import FormVerify from "./formVerify";
 
 
-import F from "./fieldCheck";
-export const FormVerify = Form;
-export const FieldCheck = F;
+import FieldCheck from "./fieldCheck";
+// 导出模块
+export default {
+    FormVerify,
+    FieldCheck,
+};
 // 示例
 /**
  * @example

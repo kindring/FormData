@@ -50,4 +50,4 @@ declare class FormVerify {
     checkForm(form: formObject, isMustMatch: boolean): boolean;
 }
 export default FormVerify;
-//# sourceMappingURL=formData.d.ts.map
+//# sourceMappingURL=formVerify.d.ts.map
