@@ -1,16 +1,26 @@
 "use strict";
 
+
 /**
  * 表单字段验证库
  * author:kindring
  * date:2023/10/08
  */
 
-// import {verifyForm} from "./types/formVerify";
-// import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction} from "./types/fieldCheck";
 
+// 在 types 中定义的 enum 在此处使用会导致异常
 
-
+/**
+ * 规则匹配结果
+ * @property code_pass 验证通过
+ * @property code_notPass 验证未通过
+ * @property code_notMatch 未匹配到规则
+ */
+enum checkCode {
+    code_pass = 1,
+    code_notPass,
+    code_notMatch
+}
 
 /**
  * @class FieldCheck
@@ -47,6 +57,7 @@
  *    // 年龄必须为18-100岁
  */
 class FieldCheck{
+
 
     // 通过
     code_pass = checkCode.code_pass;

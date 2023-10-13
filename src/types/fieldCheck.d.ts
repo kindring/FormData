@@ -1,17 +1,7 @@
 // 错误码
 type errMessage = string | undefined;
 
-/**
- * 规则匹配结果
- * @property code_pass 验证通过
- * @property code_notPass 验证未通过
- * @property code_notMatch 未匹配到规则
- */
-enum checkCode {
-    code_pass = 1,
-    code_notPass,
-    code_notMatch
-}
+
 
 type checkFields = Array<string | RegExp>;
 
