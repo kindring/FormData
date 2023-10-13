@@ -6,7 +6,7 @@
 1. 编辑 `package.josn`
 2. 在依赖 `dependencies` 中添加如下内容  
 
-"kind-form-verify": "git+http://kindring.cn:9123/kindring/FormData.git"
+"kind-form-verify": "git+https://github.com/kindring/KindFormVerify.git"
 
 `package.json` 示例:
 ```json
