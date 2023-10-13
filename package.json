@@ -10,14 +10,16 @@
   ],
   "scripts": {
     "docs": "jsdoc2md src/*.js > api.md",
-    "patch": "npm version patch",
+    "patch": "npm run build && npm version patch",
     "compile": "npx babel -d lib/ src/",
+    "build": "tsc --build --clean && tsc",
     "prepublishOnly": "npm run compile"
   },
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.23.0",
     "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2"
+    "@babel/preset-env": "^7.23.2",
+    "typescript": "^5.2.2"
   }
 }

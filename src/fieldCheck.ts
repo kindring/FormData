@@ -5,46 +5,22 @@
  * date:2023/10/08
  */
 
-/**
- * @typedef {string} errMessage 错误信息
- */
 
 
-/**
- * @typedef { Array<string | RegExp> } checkFields 验证字段匹配项
- */
-/**
- * @typedef {Object} checkRule 规则对象
- * @property {string} [type] 类型
- * @property {number} [min] 最小值
- * @property {number} [max] 最大值
- * @property {number} [length] 长度
- * @property {RegExp} [regex] 正则表达式
- * @property {errMessage} [message] 错误信息
- * @property {boolean} [require] 是否必须
- * @property {number} [minLength] 最小长度
- * @property {number} [maxLength] 最大长度
- * @property {validatorFunction} [validator] 自定义验证函数
- */
 
-/**
- * @typedef {function} validatorFunction 自定义验证函数
- * @param {any} value 需要验证的值
- * @returns {string} 返回错误信息或者 null
- */
 
-/**
- * @typedef {Object} ruleItem 验证规则对象
- * @property {Array<string>} checkFields 需要验证的字段
- * @property {Array<validatorFunction | checkRule>} rules 验证规则
- */
 
-/**
- * @typedef {number} checkCode 验证码
- * @property {1} code_pass 验证通过
- * @property {2} code_notPass 验证不通过
- * @property {3} code_notMatch 未匹配到验证规则
- */
+import {
+    checkFields,
+    checkCode,
+    checkRule,
+    ruleItem,
+    validatorFunction,
+    errMessage,
+    formObject,
+    verifyForm
+} from "./types";
+
 
 
 /**
@@ -82,24 +58,25 @@
  *    // 年龄必须为18-100岁
  */
 class FieldCheck{
+
     // 通过
-    #code_pass = 1;
+    code_pass = checkCode.code_pass;
     // 未通过
-    #code_notPass = 2;
+    code_notPass:number = checkCode.code_notPass;
 
     // 无法匹配到验证规则
-    #code_notMatch = 3;
+    code_notMatch = checkCode.code_notMatch;
 
     /**
      * @type {Array< ruleItem >}
      */
-    #ruleItems = [];
+    #ruleItems: ruleItem[] = [];
 
     /**
      *
      * @param {Array< ruleItem >} [ruleItems] 验证规则数组
      */
-    constructor(ruleItems) {
+    constructor(ruleItems?:Array< ruleItem >) {
         this.#ruleItems = [];
         if(ruleItems && Array.isArray(ruleItems)){
             // 使用 addRuleItem 添加规则
@@ -115,19 +92,23 @@ class FieldCheck{
      * @returns {boolean}
      * @private
      */
-    _isDef (v) {
+    _isDef (v:any) {
         return v !== undefined && v !== null
     }
     _toString = Object.prototype.toString;
     /**
      * 判断是否为空
-     * @param v
-     * @returns {boolean}
+     * @param v 要检验的值
      */
-    _isEmpty(v){
+    _isEmpty(v:any){
         return v === undefined || v === '';
     }
-    _isRegExp (v) {
+
+    /**
+     * 判断是否为正则
+     * @param v 要检验的值
+     */
+    _isRegExp (v:any) {
         return this._toString.call(v) === '[object RegExp]'
     }
 
@@ -138,7 +119,10 @@ class FieldCheck{
      * @param {Array<validatorFunction | checkRule>} ruleArr 验证规则
      * @returns {ruleItem} 验证规则对象
      */
-    buildRuleItem( checkFields , ruleArr) {
+    buildRuleItem(name: string,
+                  checkFields: checkFields ,
+                  ruleArr:Array<validatorFunction | checkRule> ) : ruleItem
+    {
         //  检测checkFields是否为数组
         //  检测ruleArr是否为数组
         if(!Array.isArray(checkFields) || !Array.isArray(ruleArr)){
@@ -156,10 +140,8 @@ class FieldCheck{
                 throw new Error('ruleArr item is not function or object');
             }
         }
-        /**
-         * @type {ruleItem}
-         */
-        let ruleItem = {
+        let ruleItem:ruleItem = {
+            name: name || "",
             checkFields: checkFields,
             rules: ruleArr
         }
@@ -169,13 +151,17 @@ class FieldCheck{
 
     /**
      * 添加一条验证规则
-     * @param { string } ruleName 验证规则名,用于区分
-     * @param { Array<string | RegExp> } checkFields 用于匹配字段的字符或者正则数组
-     * @param { Array<validatorFunction | checkRule> } ruleArr 验证规则
-     * @returns { FieldCheck } 返回当前对象
+     * @param ruleName 验证规则名,用于区分
+     * @param checkFields 用于匹配字段的字符或者正则数组
+     * @param ruleArr 验证规则
+     * @returns  返回当前对象
      */
-    addRuleItem( ruleName, checkFields , ruleArr) {
-        let ruleItem = this.buildRuleItem(checkFields,ruleArr);
+    addRuleItem(
+        ruleName: string,
+        checkFields: checkFields,
+        ruleArr: Array<validatorFunction | checkRule>)
+    {
+        let ruleItem = this.buildRuleItem(ruleName, checkFields, ruleArr);
         this.#ruleItems.push(ruleItem);
         return this;
     }
@@ -184,17 +170,19 @@ class FieldCheck{
 
     /**
      * 获取验证规则
-     * @param { string } field 字段名
-     * @returns { ruleItem } 验证规则
+     * @param field 字段名
+     * @returns 验证规则
      */
-    getRuleItem(field){
+    getRuleItem(field:string):ruleItem | undefined{
         return this.#ruleItems.find(item => {
             // 判断是否为正则
             for (const _matchKey of item.checkFields) {
                 // 判断是否为正则
                 if (this._isRegExp(_matchKey)) {
+                    // 确定为正则
+                    let reg :RegExp = _matchKey as RegExp;
                     // console.log(`使用正则进行匹配,${_matchKey.test(key)}`);
-                    if (_matchKey.test(field)) {
+                    if (reg.test(field)) {
                         // console.log(`通过正则匹配规则成功,${_matchKey.test(key)}`);
                         return true;
                     }
@@ -215,16 +203,19 @@ class FieldCheck{
      * 检查字段是否符合规则
      * @param field 字段名
      * @param value 字段值
-     * @returns {Array<checkCode | errMessage>} 错误码或错误信息
+     * @returns {Array<checkCode | ?errMessage>} 错误码或错误信息
      */
-    checkField(field, value){
+    checkField(field: string, value: any):
+        [ checkCode, errMessage ] | [ checkCode ]
+    {
         let ruleItem = this.getRuleItem(field);
         if(!ruleItem || !ruleItem.rules){
-            return [this.#code_notMatch];
+            return [this.code_notMatch];
         }
+
         // 判断值是否为undefined
         if(value === undefined){
-            return [this.#code_notPass, '字段值为undefined'];
+            return [this.code_notPass, '字段值为undefined'];
         }
         // 开始匹配规则
         for(let _rule of ruleItem.rules ){
@@ -233,69 +224,69 @@ class FieldCheck{
                 let  _msg = _rule(value);
                 // console.log(_msg)
                 if(_msg){
-                    return [this.#code_notPass,_msg]
+                    return [this.code_notPass,_msg]
                 }
             }
-
+            let rule = _rule as checkRule;
             // 判断类型
-            if(_rule.type && typeof value !== _rule.type){
-                return [this.#code_notPass, _rule.message]
+            if(rule.type && typeof value !== rule.type){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断是否为必填项
-            if(_rule.require && this._isEmpty(value)){
-                return [this.#code_notPass, _rule.message]
+            if(rule.require && this._isEmpty(value)){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断最小值
-            if(_rule.min && value < _rule.min){
-                return [this.#code_notPass, _rule.message]
+            if(rule.min && value < rule.min){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断最大值
-            if(_rule.max && value > _rule.max){
-                return [this.#code_notPass, _rule.message]
+            if(rule.max && value > rule.max){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断值是否达到指定长度
-            if(_rule.length && value.length && value.length !== _rule.length){
-                return [this.#code_notPass, _rule.message]
+            if(rule.length && value.length && value.length !== rule.length){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断最小长度
-            if(_rule.minLength && value.length && value.length < _rule.minLength){
-                return [this.#code_notPass, _rule.message]
+            if(rule.minLength && value.length && value.length < rule.minLength){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断最大长度
-            if(_rule.maxLength && value.length && value.length > _rule.maxLength){
-                return [this.#code_notPass, _rule.message]
+            if(rule.maxLength && value.length && value.length > rule.maxLength){
+                return [this.code_notPass, rule.message]
             }
 
             // 判断是否符合正则
-            if(_rule.regex && !_rule.regex.test(value)){
-                return [this.#code_notPass, _rule.message]
+            if(rule.regex && !rule.regex.test(value)){
+                return [this.code_notPass, rule.message]
             }
 
         }
 
-        return [this.#code_pass]
+        return [this.code_pass]
 
     }
 
     /**
      * 检查表单是否符合规则
-     * @param { Object } formObject 需要检验的表单项 字段:值
+     * @param formObject 需要检验的表单项 字段:值
      * @param [isMustMatch] 是否强制要求匹配规则
-     * @returns { errMessage } 错误码或错误信息
+     * @returns errMessage 错误码或错误信息
      */
-    verify(formObject, isMustMatch){
+    verify(formObject: verifyForm, isMustMatch:boolean = false){
         for (const _oKey in formObject) {
             let value = formObject[_oKey];
             let r = this.checkField(_oKey,value);
-            if(r[0] === this.#code_notPass){
+            if(r[0] === this.code_notPass){
                 return r[1]
-            }else if(isMustMatch && r[0] === this.#code_notMatch){
+            }else if(isMustMatch && r[0] === this.code_notMatch){
                 return `字段没有对应匹配项`
             }
         }
