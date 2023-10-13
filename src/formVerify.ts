@@ -223,7 +223,8 @@ class FormVerify {
 
             // 禁用值判断 array
             if(formItem.disables){
-                if(formItem.disables.indexOf(formItem.val || '') !== -1){
+
+                if(formItem.disables.find(item=>item === formItem.val)){
                     formItem.msg = '该项内容不合法';
                     r = false;
                 }

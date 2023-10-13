@@ -36,13 +36,13 @@ type FormVerifyOption = {
  */
 type formItemData = {
     // 字段值
-    val?: string;
+    val?: string | number | boolean | null;
     // 提示信息
     msg?: string;
     state?: number;
     showText?: string;
     label?: string;
-    init?: string;
+    init?: string | number | boolean | null;
     options?: formOption[];
     depend?: string;
     reCheckField?: string;
