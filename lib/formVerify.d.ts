@@ -36,14 +36,14 @@ declare class FormVerify {
     static initFormItemData(formObject: formObject): void;
     /**
      * 检查表单项是否符合要求
-     * @param form 表单对象
+     * @param {formObject} form 表单对象
      * @param isMustMatch 是否必须全部匹配到验证规则
      * @returns {boolean}
      */
     checkForm(form: formObject, isMustMatch: boolean): boolean;
     /**
      * 验证当前的表单是否符合要求
-     * @param isMustMatch
+     * @param [isMustMatch] 是否必须全部匹配到验证规则
      */
     check(isMustMatch?: boolean): boolean;
 }

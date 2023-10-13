@@ -197,7 +197,7 @@ class FormVerify {
 
     /**
      * 检查表单项是否符合要求
-     * @param form 表单对象
+     * @param {formObject} form 表单对象
      * @param isMustMatch 是否必须全部匹配到验证规则
      * @returns {boolean}
      */

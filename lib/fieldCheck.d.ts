@@ -94,7 +94,7 @@ declare class FieldCheck {
     ] | [checkCode];
     /**
      * 检查表单是否符合规则
-     * @param formObject 需要检验的表单项 字段:值
+     * @param {verifyForm} formObject 需要检验的表单项 字段:值
      * @param [isMustMatch] 是否强制要求匹配规则
      * @returns errMessage 错误码或错误信息
      */
