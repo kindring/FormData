@@ -1,17 +1,17 @@
 /**
  * @module kind-form-verify
  */
+import "./types";
+
+export {default as FormVerify} from "./formVerify";
 
 
-import FormVerify from "./formVerify";
-
-
-import FieldCheck from "./fieldCheck";
+export {default as FieldCheck} from "./fieldCheck";
 // 导出模块
-export default {
-    FormVerify,
-    FieldCheck,
-};
+// export default {
+//     FormVerify,
+//     FieldCheck,
+// };
 // 示例
 /**
  * @example
