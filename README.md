@@ -12,7 +12,7 @@
 ```json
 {
   "dependencies": {
-    "kind-form-verify": "git+http://kindring.cn:9123/kindring/FormData.git"
+    "kind-form-verify": "git+https://github.com/kindring/KindFormVerify.git"
   }
 }
 ```
