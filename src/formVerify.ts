@@ -301,9 +301,9 @@ class FormVerify {
 
     /**
      * 验证当前的表单是否符合要求
-     * @param isMustMatch
+     * @param [isMustMatch] 是否必须全部匹配到验证规则
      */
-    public check (isMustMatch = false) : boolean {
+    public check (isMustMatch:boolean = false) : boolean {
         return this.checkForm(this.formData as formObject, isMustMatch);
     }
 
