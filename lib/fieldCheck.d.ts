@@ -3,8 +3,6 @@
  * author:kindring
  * date:2023/10/08
  */
-import { verifyForm } from "./types/formVerify";
-import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction } from "./types/fieldCheck";
 /**
  * @class FieldCheck
  * @description 表单字段验证类
@@ -44,10 +42,6 @@ declare class FieldCheck {
     code_pass: checkCode;
     code_notPass: number;
     code_notMatch: checkCode;
-    /**
-     *
-     * @param {Array< ruleItem >} [ruleItems] 验证规则数组
-     */
     constructor(ruleItems?: Array<ruleItem>);
     /**
      * 判断值是否定义

@@ -1,3 +1,6 @@
+/**
+ * @module kind-form-verify
+ */
 export { default as FormVerify } from "./formVerify";
 export { default as FieldCheck } from "./fieldCheck";
 /**

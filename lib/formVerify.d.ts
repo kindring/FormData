@@ -1,5 +1,4 @@
 import FieldCheck from "./fieldCheck";
-import { formItemData, formObject, FormVerifyOption } from "./types/formVerify";
 /**
  * @class FormItem 表单验证类
  * @description 表单项
@@ -42,6 +41,11 @@ declare class FormVerify {
      * @returns {boolean}
      */
     checkForm(form: formObject, isMustMatch: boolean): boolean;
+    /**
+     * 验证当前的表单是否符合要求
+     * @param isMustMatch
+     */
+    check(isMustMatch?: boolean): boolean;
 }
 export default FormVerify;
 //# sourceMappingURL=formVerify.d.ts.map

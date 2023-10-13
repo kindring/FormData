@@ -3,8 +3,6 @@
  */
 // import "./types";
 // 导入 types
-import { formItemData, formObject, formOption, FormVerifyOption, verifyForm }  from "./types/formVerify";
-import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction} from "./types/fieldCheck";
 export {default as FormVerify} from "./formVerify";
 
 

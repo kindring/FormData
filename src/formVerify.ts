@@ -70,7 +70,8 @@ class FormVerify {
                          field: string,
                          formItemData: formItemData,
                          fieldCheck: FieldCheck,
-                         isMustMatchRule: boolean) {
+                         isMustMatchRule: boolean)
+    {
         if ( !FormVerify.isObject(formItemData) ){
             return `form item ${field} must be object`;
         }
@@ -200,7 +201,7 @@ class FormVerify {
      * @param isMustMatch 是否必须全部匹配到验证规则
      * @returns {boolean}
      */
-    checkForm (form: formObject, isMustMatch: boolean) {
+    public checkForm (form: formObject, isMustMatch: boolean) :boolean {
         let r = true;
         let n_checkPass = 0,
             n_checkTotal = 0;
@@ -296,6 +297,14 @@ class FormVerify {
         msg = `检查表单项通过率:${n_checkPass}/${n_checkTotal}`;
         console.log(msg);
         return r;
+    }
+
+    /**
+     * 验证当前的表单是否符合要求
+     * @param isMustMatch
+     */
+    public check (isMustMatch = false) : boolean {
+        return this.checkForm(this.formData as formObject, isMustMatch);
     }
 
 }
