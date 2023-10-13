@@ -1,6 +1,7 @@
 "use strict";
 import FieldCheck from "./fieldCheck";
-import {formItemData, formObject, formOption, FormVerifyOption} from "./types";
+
+import {formItemData, formObject, formOption, FormVerifyOption} from "./types/formVerify";
 let hasOwnProperty = Object.prototype.hasOwnProperty;
 function hasOwn (obj:object, key:string) {
     return hasOwnProperty.call(obj, key)
@@ -10,7 +11,7 @@ function hasOwn (obj:object, key:string) {
 /**
  * @class FormItem 表单验证类
  * @description 表单项
- * @param {object} object 表单项数据
+ * @param {formObject} formObject 表单项数据
  * @param {FieldCheck} [fieldCheck] 字段验证对象
  * @param {object} [option] 配置项
  */
@@ -34,28 +35,23 @@ class FormVerify {
     formState_default: number = 0;
     formState_pass: number = 1;
     formState_notPass: number = 2;
-    /**
-     *
-     * @param object
-     * @param {FieldCheck} [fieldCheck] 字段验证对象
-     * @param {object} [option] 配置项
-     */
-    constructor(object:formObject, fieldCheck?:FieldCheck, option?:FormVerifyOption) {
+
+    constructor(formObject:formObject, fieldCheck?:FieldCheck, option?:FormVerifyOption) {
         this.fieldCheck = fieldCheck || new FieldCheck();
         // 合并配置项
         this.option = Object.assign(this.defaultOption, option);
 
         let errMsg;
         // 拿出其中的每一项来构建对应的表单项
-        for (let key in object) {
+        for (let key in formObject) {
             // this.formData[key] = object[key];
             // 验证表单项是否符合要求,不符合要求则抛出错误
-            errMsg = FormVerify.buildFormItem(object, key, object[key], this.fieldCheck, this.option.isMustMatchRule);
+            errMsg = FormVerify.buildFormItem(formObject, key, formObject[key], this.fieldCheck, this.option.isMustMatchRule);
             if (errMsg) {
                 throw new Error(`表单项${key}不符合要求,err:${errMsg}`);
             }
         }
-        this.formData = object;
+        this.formData = formObject;
     }
     static isObject (obj:any) {
         return obj !== null && typeof obj === 'object'

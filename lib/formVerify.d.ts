@@ -1,9 +1,9 @@
 import FieldCheck from "./fieldCheck";
-import { formItemData, formObject, FormVerifyOption } from "./types";
+import { formItemData, formObject, FormVerifyOption } from "./types/formVerify";
 /**
  * @class FormItem 表单验证类
  * @description 表单项
- * @param {object} object 表单项数据
+ * @param {formObject} formObject 表单项数据
  * @param {FieldCheck} [fieldCheck] 字段验证对象
  * @param {object} [option] 配置项
  */
@@ -18,13 +18,7 @@ declare class FormVerify {
     formState_default: number;
     formState_pass: number;
     formState_notPass: number;
-    /**
-     *
-     * @param object
-     * @param {FieldCheck} [fieldCheck] 字段验证对象
-     * @param {object} [option] 配置项
-     */
-    constructor(object: formObject, fieldCheck?: FieldCheck, option?: FormVerifyOption);
+    constructor(formObject: formObject, fieldCheck?: FieldCheck, option?: FormVerifyOption);
     static isObject(obj: any): boolean;
     /**
      * 检查表单项是否符合要求

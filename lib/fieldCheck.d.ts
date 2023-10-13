@@ -3,7 +3,8 @@
  * author:kindring
  * date:2023/10/08
  */
-import { checkFields, checkCode, checkRule, ruleItem, validatorFunction, errMessage, verifyForm } from "./types";
+import { verifyForm } from "./types/formVerify";
+import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction } from "./types/fieldCheck";
 /**
  * @class FieldCheck
  * @description 表单字段验证类

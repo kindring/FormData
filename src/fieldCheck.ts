@@ -5,21 +5,13 @@
  * date:2023/10/08
  */
 
+import {verifyForm} from "./types/formVerify";
+import { errMessage, checkCode, checkRule, ruleItem, checkFields, validatorFunction} from "./types/fieldCheck";
 
 
 
 
 
-import {
-    checkFields,
-    checkCode,
-    checkRule,
-    ruleItem,
-    validatorFunction,
-    errMessage,
-    formObject,
-    verifyForm
-} from "./types";
 
 
 

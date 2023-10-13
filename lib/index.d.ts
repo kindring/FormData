@@ -1,7 +1,6 @@
 /**
  * @module kind-form-verify
  */
-import "./types";
 export { default as FormVerify } from "./formVerify";
 export { default as FieldCheck } from "./fieldCheck";
 /**
