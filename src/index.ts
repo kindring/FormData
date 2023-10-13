@@ -7,7 +7,7 @@ import Form from "./formData";
 
 
 import F from "./fieldCheck";
-export const FormItem = Form;
+export const FormVerify = Form;
 export const FieldCheck = F;
 // 示例
 /**

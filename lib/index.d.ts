@@ -3,7 +3,7 @@
  */
 import Form from "./formData";
 import F from "./fieldCheck";
-export declare const FormItem: typeof Form;
+export declare const FormVerify: typeof Form;
 export declare const FieldCheck: typeof F;
 /**
  * @example
