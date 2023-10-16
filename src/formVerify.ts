@@ -315,7 +315,7 @@ class FormVerify {
             // 使用验证规则进行
             formItem.msg = this.fieldCheck.verify({
                 [checkField]:formItem.val,
-            })
+            });
 
 
             if (formItem.msg)
@@ -324,7 +324,6 @@ class FormVerify {
                 logStr = `检测字段:${checkField},值:${formItem.val}不符合规则,${formItem.msg}`;
             }
 
-            if ( logStr ) logHandle(logStr);
 
             if(r){
                 n_checkPass++;
@@ -332,9 +331,11 @@ class FormVerify {
                 formItem.state = this.formState_pass;
                 formItem.msg = '';
             }else{
+                logStr = `检测字段:${checkField},值:${formItem.val}不符合规则,${formItem.msg}`;
                 formItem.state = this.formState_notPass;
             }
         }
+        if ( logStr ) logHandle(logStr);
 
         msg = `检查表单项通过率:${n_checkPass}/${n_checkTotal}`;
         console.log(msg);
