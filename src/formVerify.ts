@@ -324,6 +324,7 @@ class FormVerify {
             // 使用验证规则进行
             formItem.msg = this.fieldCheck.verify({
                 [checkField]:formItem.val,
+                isMustMatch
             });
 
 
@@ -359,6 +360,40 @@ class FormVerify {
         return this.checkForm(this.formData as formObject, isMustMatch);
     }
 
+    /**
+     * 检测特定表单项的内容是否符合规则
+     * @param field 字段名
+     * @param isMustMatch 是否必须匹配到验证规则 默认 true
+     */
+    public checkItem (field:string, isMustMatch = true) : boolean {
+        // 获取表单项
+        let formItem: formItemData | undefined;
+        let depend: formItemData | undefined;
+        let formObject = {} as formObject;
+        formItem = this?.formData?.[field];
+        if(!formItem){
+            return false;
+        }
+        formObject[field] = formItem;
+        // 判断是否有depend字段
+        if(formItem.depend){
+            formObject[formItem.depend] = this.formData?.[formItem.depend] as formItemData;
+        }
+        // 检查表单项是否符合要求
+        return this.checkForm(formObject, isMustMatch);
+    }
+
+    /**
+     * 使用该表单绑定的验证器进行验证字段与值是否符合规则
+     * @param field 要验证的字段
+     * @param value 要验证的值
+     * @param isMustMatch
+     */
+    public verifyKnV ( field:string, value:any, isMustMatch = true ) : errMessage {
+        return this.fieldCheck.verify({
+            [field]:value,
+        }, isMustMatch);
+    }
 }
 
 export default FormVerify;

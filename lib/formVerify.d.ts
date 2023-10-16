@@ -47,6 +47,19 @@ declare class FormVerify {
      * @param [isMustMatch] 是否必须全部匹配到验证规则
      */
     check(isMustMatch?: boolean): boolean;
+    /**
+     * 检测特定表单项的内容是否符合规则
+     * @param field 字段名
+     * @param isMustMatch 是否必须匹配到验证规则 默认 true
+     */
+    checkItem(field: string, isMustMatch?: boolean): boolean;
+    /**
+     * 使用该表单绑定的验证器进行验证字段与值是否符合规则
+     * @param field 要验证的字段
+     * @param value 要验证的值
+     * @param isMustMatch
+     */
+    verifyKnV(field: string, value: any, isMustMatch?: boolean): errMessage;
 }
 export default FormVerify;
 //# sourceMappingURL=formVerify.d.ts.map
