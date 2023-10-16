@@ -60,6 +60,11 @@ declare class FormVerify {
      * @param isMustMatch
      */
     verifyKnV(field: string, value: any, isMustMatch?: boolean): errMessage;
+    /**
+     * 获取表单keyValue数据对
+     * @returns {verifyForm} key:value
+     */
+    getFormData(): verifyForm;
 }
 export default FormVerify;
 //# sourceMappingURL=formVerify.d.ts.map

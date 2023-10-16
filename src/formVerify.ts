@@ -394,6 +394,24 @@ class FormVerify {
             [field]:value,
         }, isMustMatch);
     }
+
+    /**
+     * 获取表单keyValue数据对
+     * @returns {verifyForm} key:value
+     */
+    public getFormData () :verifyForm
+    {
+        let formData = {} as verifyForm;
+        for (const key in this.formData)
+        {
+            if (hasOwn(this.formData, key))
+            {
+                const formItem = this.formData[key];
+                formData[key] = formItem.val;
+            }
+        }
+        return formData;
+    }
 }
 
 export default FormVerify;
