@@ -273,17 +273,15 @@ class FormVerify {
                         formItem.state = this.formState_notPass;
                         r = false;
                     }
-
+                    // 检查通过
+                    formItem.state = this.formState_pass;
+                    formItem.msg = '';
                 }else{
                     logStr = `项${fieldKey} 检测枚举字段:${checkField},值:${formItem.val}不在范围内`;
                     formItem.msg = '选项不在范围内';
                     formItem.state = this.formState_notPass;
                     r = false;
                 }
-
-                // 检查通过
-                formItem.state = this.formState_pass;
-                formItem.msg = '';
                     // 枚举值判断完毕,继续下一个字段
                 n_checkPass++;
                 continue;
