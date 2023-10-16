@@ -267,7 +267,6 @@ class FormVerify {
                     formItem.state = this.formState_pass;
                 }else{
                     logStr = `项${fieldKey} 检测枚举字段:${checkField},值:${formItem.val}不在范围内`;
-                    this.onLog(`检测枚举字段:${checkField},值:${formItem.val}不在范围内`)
                     formItem.msg = '选项不在范围内';
                     formItem.state = this.formState_notPass;
                     r = false;
@@ -329,6 +328,7 @@ class FormVerify {
 
             if(r){
                 n_checkPass++;
+                logStr = `检测字段:${checkField},值:${formItem.val}符合规则`;
                 formItem.state = this.formState_pass;
                 formItem.msg = '';
             }else{
