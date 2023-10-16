@@ -198,7 +198,7 @@ class FormVerify {
 
     // onLog函数
     public onLog: (msg: string) => void = (msg: string) => {
-        console.log(msg);
+        // 不进行任何操作.
     }
 
     /**
@@ -233,6 +233,16 @@ class FormVerify {
             let tmpInd = -1;
 
             n_checkTotal++;
+
+            if(formItem.notCheck)
+            {
+                n_checkPass++;
+                logStr = `项${fieldKey} 不进行检查`;
+                formItem.state = this.formState_pass;
+                formItem.msg = '';
+                logHandle(logStr);
+                continue;
+            }
 
             if(formItem.reCheckField){
                 checkField = formItem.reCheckField;

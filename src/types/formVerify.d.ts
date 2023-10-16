@@ -33,6 +33,7 @@ type FormVerifyOption = {
  * @property [depend] 依赖字段
  * @property [reCheckField] 重新验证字段
  * @property [disables] 禁用字段
+ * @property [notCheck] 是否不验证此字段? false
  * @property [any] 字段名
  */
 type formItemData = {
@@ -48,6 +49,7 @@ type formItemData = {
     depend?: string;
     reCheckField?: string;
     disables?: string[];
+    notCheck?: boolean;
     // 允许有其他字段
     [key: string]: any;
 }
