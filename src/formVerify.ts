@@ -196,6 +196,11 @@ class FormVerify {
     }
 
 
+    // onLog函数
+    public onLog: (msg: string) => void = (msg: string) => {
+        console.log(msg);
+    }
+
     /**
      * 检查表单项是否符合要求
      * @param {formObject} form 表单对象
@@ -206,9 +211,20 @@ class FormVerify {
         let r = true;
         let n_checkPass = 0,
             n_checkTotal = 0;
+        let tmpOption: formOption | undefined = {} as formOption;
         let msg = '';
+        let logStr = '';
+        let logHandle = (_str:string )=>{
+            try {
+                this.onLog(_str);
+            }catch (e) {
+                console.log(_str)
+                console.error(e);
+            }
+        };
         for (const fieldKey in form) {
             let formItem = form[fieldKey];
+            logStr = '';
             if(!formItem){
                 continue;
             }
@@ -227,6 +243,7 @@ class FormVerify {
 
                 if(formItem.disables.find(item=>item === formItem.val)){
                     formItem.msg = '该项内容不合法';
+                    formItem.state = this.formState_notPass;
                     r = false;
                 }
             }
@@ -235,19 +252,28 @@ class FormVerify {
             if(formItem.options){
                 // 有枚举字段,只判断是否在枚举中
                 // console.log(`检测枚举字段:${checkField},值:${formItem.val}`);
-                tmpInd = formItem.options.findIndex(item=>item.value == formItem.val);
-                if(tmpInd === -1){
-                    console.log(`检测枚举字段:${checkField},值:${formItem.val}不在范围内`);
-                    formItem.msg = '选项不在范围内';
-                    formItem.state = 1;
-                    r = false;
-                }else{
-                    // 判断值是否为禁用项
-                    if(formItem.options[tmpInd].disabled){
+                tmpOption = formItem.options.find(item=>item.value == formItem.val);
+                // tmpInd = formItem.options.findIndex(item=>item.value == formItem.val);
+                if ( tmpOption )
+                {
+                    if (tmpOption.disabled)
+                    {
+                        logStr = `项${fieldKey} 检测枚举字段:${checkField},值:${formItem.val}被禁用`;
                         formItem.msg = '该选项已经被禁用';
+                        formItem.state = this.formState_notPass;
                         r = false;
                     }
+                    // 检查通过
+                    formItem.state = this.formState_pass;
+                }else{
+                    logStr = `项${fieldKey} 检测枚举字段:${checkField},值:${formItem.val}不在范围内`;
+                    this.onLog(`检测枚举字段:${checkField},值:${formItem.val}不在范围内`)
+                    formItem.msg = '选项不在范围内';
+                    formItem.state = this.formState_notPass;
+                    r = false;
                 }
+
+
                 // 枚举值判断完毕,继续下一个字段
                 n_checkPass++;
                 continue;
@@ -260,8 +286,10 @@ class FormVerify {
                     // 依赖的对象有枚举类型,检查该枚举类型是否有有检测值
                     let optionItem = depend.options.find(item=>item.value == formItem.val);
                     if(!optionItem){
+                        logStr = `检测依赖字段:${depend},但是选项${ formItem.val }不在范围内`;
                         depend.msg = '选项不在范围内';
                         formItem.msg = '该值依赖项输入异常';
+
                         r = false;
                         // continue;
                     }
@@ -272,13 +300,17 @@ class FormVerify {
                     }
 
                 }else{
+                    logStr = `项${fieldKey} 依赖表单项:${depend},没有对应 options 内容`;
                     r = false;
                 }
                 if(!r)
                 {
+                    logStr = `项${fieldKey} 检测依赖字段:${depend},但是选项${ formItem.val }不在范围内`;
                     depend.msg = '该项依赖项输入异常';
                     formItem.msg = '该值依赖项输入异常';
+                    formItem.state = this.formState_notPass;
                 }
+
             }
 
             // 使用验证规则进行
@@ -287,12 +319,20 @@ class FormVerify {
             })
 
 
-            if (formItem.msg) r = false;
+            if (formItem.msg)
+            {
+                r = false;
+                logStr = `检测字段:${checkField},值:${formItem.val}不符合规则,${formItem.msg}`;
+            }
+
+            if ( logStr ) logHandle(logStr);
+
             if(r){
                 n_checkPass++;
-                formItem.state = this.formState_pass
+                formItem.state = this.formState_pass;
+                formItem.msg = '';
             }else{
-                formItem.state = this.formState_notPass
+                formItem.state = this.formState_notPass;
             }
         }
 
