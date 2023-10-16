@@ -2,8 +2,10 @@
   "name": "kind-form-verify",
   "version": "1.0.4",
   "description": "表单规则验证工具库",
-  "main": "lib/index.js",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "author": "kindring",
   "keywords": [
     "verify",
@@ -15,7 +17,7 @@
     "patch": "npm run build && npm version patch",
     "compile": "npx babel -d lib/ src/",
     "clean": "rimraf -rf lib/",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "prepublishOnly": "npm run compile"
   },
   "license": "MIT",
