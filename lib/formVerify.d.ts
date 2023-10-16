@@ -34,6 +34,7 @@ declare class FormVerify {
      * @param { formObject } formObject 表单对象
      */
     static initFormItemData(formObject: formObject): void;
+    onLog: (msg: string) => void;
     /**
      * 检查表单项是否符合要求
      * @param {formObject} form 表单对象
