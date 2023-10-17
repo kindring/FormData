@@ -1,7 +1,8 @@
 
 
-import {FieldCheck, FormVerify} from "../lib/esm/index.js"
-import {paramsRules} from "./rule.js"
+const {FieldCheck, FormVerify} = require("../lib/cjs/index.js")
+const {paramsRules} = require("./rule")
+const {color, ColorValue} = require("./colorConsole");
 
 let fieldCheck  = new FieldCheck(paramsRules);
 
@@ -162,8 +163,53 @@ let t_form = {
     },
 }
 let formVerify = new FormVerify(t_form, fieldCheck);
+formVerify.onLog = (msg)=>{
+    console.log(`${color('[INFO]', ColorValue.green) } ${color(msg, ColorValue.bright)}`);
+}
+let testFn = (field, val)=>{
+    let errMsg = '';
+    t_form[field].val = val;
+    errMsg = formVerify.checkItem(field);
+    console.log(`------ ${field}: ${val} ------`);
+    // console.log(`${ColorValue.green}2222`)
+    console.log(`[${!
+        errMsg?color('pass', ColorValue.green)
+        :color('failed', ColorValue.red)}] ${errMsg || ''}`);
+    console.log();
+}
 
-t_form.remark.val = '123';
 
-let t_b_1 = formVerify.checkItem('remark');
-console.log(`[${t_b_1?'pass':'failed'}] ${t_form.remark.msg}`);
+
+console.log(color('\n-----------测试单项验证------------', ColorValue.bright))
+testFn('remark', '12345');
+testFn('type', 'all');
+testFn('type', t_form.type.options[1].value);
+testFn('type', '11111');
+testFn('cover', '1233');
+
+console.log(color('\n-----------测试获取结果------------', ColorValue.bright))
+console.log(formVerify.getFormData());
+
+t_form.type.val = t_form.type.options[1].value;
+
+console.log(formVerify.getFormData());
+
+console.log(color('\n-----------测试重置------------', ColorValue.bright))
+formVerify.init();
+console.log(formVerify.getFormData());
+
+console.log(color('\n-----------测试整体验证------------', ColorValue.bright))
+t_form.type.val = t_form.type.options[1].value;
+t_form.cover.val = '1233';
+t_form.remark.val = '12345';
+console.log(formVerify.check());
+console.log(formVerify.getFormData());
+
+
+console.log(color('\n-----------测试整体验证------------', ColorValue.bright))
+t_form.type.val = t_form.type.options[0].value;
+t_form.cover.val = '1233';
+t_form.remark.val = '12345';
+console.log(formVerify.check());
+console.log(formVerify.getFormData());
+

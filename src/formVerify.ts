@@ -212,7 +212,6 @@ class FormVerify {
         let n_checkPass = 0,
             n_checkTotal = 0;
         let tmpOption: formOption | undefined = {} as formOption;
-        let msg = '';
         let logStr = '';
         let logHandle = (_str:string )=>{
             try {
@@ -225,12 +224,13 @@ class FormVerify {
         for (const fieldKey in form) {
             let formItem = form[fieldKey];
             logStr = '';
+            let isFailed = false;
             if(!formItem){
                 continue;
             }
             let depend: formItemData | undefined = form[formItem.depend || ''];
             let checkField = fieldKey;
-            let tmpInd = -1;
+            logHandle(`检测字段:${checkField},值:${formItem.val}`);
 
             n_checkTotal++;
 
@@ -252,9 +252,14 @@ class FormVerify {
             if(formItem.disables){
 
                 if(formItem.disables.find(item=>item === formItem.val)){
+                    // console.log(`项${fieldKey} 的值为禁用值`)
+                    logStr = `项${fieldKey} 检测到禁用值`;
                     formItem.msg = '该项内容不合法';
                     formItem.state = this.formState_notPass;
-                    r = false;
+                    isFailed = true;
+                    if ( logStr ) logHandle(logStr);
+                    // 如果是匹配到禁用字段, 后续的检测不进行
+                    continue;
                 }
             }
 
@@ -271,7 +276,7 @@ class FormVerify {
                         logStr = `项${fieldKey} 检测枚举字段:${checkField},值:${formItem.val}被禁用`;
                         formItem.msg = '该选项已经被禁用';
                         formItem.state = this.formState_notPass;
-                        r = false;
+                        isFailed = true;
                     }
                     // 检查通过
                     formItem.state = this.formState_pass;
@@ -280,9 +285,10 @@ class FormVerify {
                     logStr = `项${fieldKey} 检测枚举字段:${checkField},值:${formItem.val}不在范围内`;
                     formItem.msg = '选项不在范围内';
                     formItem.state = this.formState_notPass;
-                    r = false;
+                    isFailed = true;
                 }
-                    // 枚举值判断完毕,继续下一个字段
+                if ( logStr ) logHandle(logStr);
+                // 枚举值判断完毕,继续下一个字段
                 n_checkPass++;
                 continue;
             }
@@ -298,7 +304,7 @@ class FormVerify {
                         depend.msg = '选项不在范围内';
                         formItem.msg = '该值依赖项输入异常';
 
-                        r = false;
+                        isFailed = true;
                         // continue;
                     }
                     optionItem = optionItem as formOption;
@@ -309,7 +315,7 @@ class FormVerify {
 
                 }else{
                     logStr = `项${fieldKey} 依赖表单项:${depend},没有对应 options 内容`;
-                    r = false;
+                    isFailed = true;
                 }
                 if(!r)
                 {
@@ -321,6 +327,7 @@ class FormVerify {
 
             }
 
+
             // 使用验证规则进行
             formItem.msg = this.fieldCheck.verify({
                 [checkField]:formItem.val,
@@ -330,25 +337,26 @@ class FormVerify {
 
             if (formItem.msg)
             {
-                r = false;
+                isFailed = true;
                 logStr = `检测字段:${checkField},值:${formItem.val}不符合规则,${formItem.msg}`;
             }
 
 
-            if(r){
+            if(isFailed){
+                logStr = `检测字段:${checkField},值:${formItem.val}不符合规则,${formItem.msg}`;
+                formItem.state = this.formState_notPass;
+                r = false;
+            }else{
                 n_checkPass++;
                 logStr = `检测字段:${checkField},值:${formItem.val}符合规则`;
                 formItem.state = this.formState_pass;
                 formItem.msg = '';
-            }else{
-                logStr = `检测字段:${checkField},值:${formItem.val}不符合规则,${formItem.msg}`;
-                formItem.state = this.formState_notPass;
             }
+            if ( logStr ) logHandle(logStr);
         }
-        if ( logStr ) logHandle(logStr);
 
-        msg = `检查表单项通过率:${n_checkPass}/${n_checkTotal}`;
-        console.log(msg);
+
+        logHandle(`检查表单项通过率:${n_checkPass}/${n_checkTotal}`)
         return r;
     }
 
@@ -365,22 +373,23 @@ class FormVerify {
      * @param field 字段名
      * @param isMustMatch 是否必须匹配到验证规则 默认 true
      */
-    public checkItem (field:string, isMustMatch = true) : boolean {
+    public checkItem (field:string, isMustMatch = true) : string | null {
         // 获取表单项
         let formItem: formItemData | undefined;
         let depend: formItemData | undefined;
         let formObject = {} as formObject;
         formItem = this?.formData?.[field];
         if(!formItem){
-            return false;
+            return null;
         }
         formObject[field] = formItem;
         // 判断是否有depend字段
         if(formItem.depend){
             formObject[formItem.depend] = this.formData?.[formItem.depend] as formItemData;
         }
+        let pass = this.checkForm(formObject, isMustMatch);
         // 检查表单项是否符合要求
-        return this.checkForm(formObject, isMustMatch);
+        return formObject[field].msg ? formObject[field].msg as string : null;
     }
 
     /**
@@ -411,6 +420,10 @@ class FormVerify {
             }
         }
         return formData;
+    }
+
+    public init(){
+        FormVerify.initFormItemData(this.formData as formObject);
     }
 }
 

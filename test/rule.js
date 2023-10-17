@@ -137,7 +137,7 @@ const cardRule = [
         return checkID(val)?'':'身份证验证失败';
     }]
 
-export const paramsRules = [
+const paramsRules = [
     {
         name: "用户名验证规则",
         checkFields: ['name','workerName','buildingName','entranceName'],
@@ -187,6 +187,6 @@ export const paramsRules = [
 ]
 
 
-export default {
+module.exports = {
     paramsRules
 }
