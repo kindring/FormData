@@ -1,6 +1,4 @@
-/**
- * 测试 表单验证器
- */
+
 
 import {FieldCheck, FormVerify} from "../lib/esm/index.js"
 import {paramsRules} from "./rule.js"
